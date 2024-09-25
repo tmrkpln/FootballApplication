@@ -1,0 +1,38 @@
+﻿@using EntityLayer.Entites
+@model List<Teams>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <h1 class="mt-4">Teams<a href="Team/TeamAdd" class="btn btn-outline-primary">Takım Ekle</a></h1>
+    <h3>Toplam takım sayısı : @ViewBag.TeamCount</h3>
+    <div class="row">
+        @foreach (var team in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="@team.Logo" class="card-img-top team-logo" alt="@team.TeamName Logo">
+                    <div class="card-body">
+                        <h5 class="card-title">@team.TeamName</h5>
+                        <p class="card-text">
+                            <strong>Founding Year:</strong> @team.FoundingYear.Year<br>
+                            <strong>Team Colours:</strong> @team.TeamColours
+                        </p>
+                    </div>
+                </div>
+                <a href="/Team/UpdateTeam/@team.TeamsID" class="btn btn-success">Güncelle</a>
+                <a href="/Team/DeleteTeam/@team.TeamsID" class="btn btn-danger">Sil</a>
+                
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .team-logo {
+        width: 100%;
+        height: 400px; /* İstediğiniz yüksekliği belirleyin */
+    }
+</style>

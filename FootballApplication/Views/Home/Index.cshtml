@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+
+<h1><a href="Team/TeamAdd" class="btn btn-primary">Takım ekle</a> </h1>
+<h1><a href="Team/Index" class="btn btn-primary">Takımları Görüntüle</a></h1>
+<h1><a href="Match/Index" class="btn btn-primary">Fikstür Görüntüle</a></h1>
+<h1><a href="TeamPoints/Index" class="btn btn-primary">Puan Tablosunu Görüntüle</a></h1>
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(() => {
+        // SignalR bağlantısını oluştur
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("https://localhost:7188/SignalRHub")
+            .build();
+
+        // Bağlantıyı başlat
+        connection.start().then(() => {
+            setInterval(() => {
+                connection.invoke("SendMessage");
+                connection.invoke("SendList");
+                connection.invoke("SendWeek");
+                connection.invoke("SendAttack");
+                connection.invoke("SendAttackResult");
+                connection.invoke("SendTimeMinute");
+                connection.invoke("SendTimeSecond");
+            }, 1000);
+
+        }).catch((err) => {
+            console.log(err);
+        });
+        connection.on("SendTime", function (week) {
+            $("#week").text(week + ".Hafta Başladı");
+        });
+        connection.on("ReceiverTimeSecond", function (second) {
+            $("#timeSecound").text(second);
+        });
+
+        connection.on("ReceiverTimeMinute", function (minute) {
+            var secound = $("#timeSecound").text();
+            $("#time").text(minute + "-" + secound);
+        });
+        
+        connection.on("ReceiveMessage", function (message) {
+            $("#count1").text(message);
+        });
+        connection.on("ReceiveMatchDatesList", function (matchDatesList) {
+            var listHtml = "";
+            listHtml += `<p>${matchDatesList.homeOwnerName} ${matchDatesList.homeOwnerScore} - ${matchDatesList.displacementScore} ${matchDatesList.displacemenName}</p>`;
+            $("#matchList").html(listHtml);
+        });
+      
+        connection.on("ReceiveAttackList", function (matchResult) {
+            var listHtml = `<p>${matchResult.teamName} - ${matchResult.attackName}</p>`;
+            $("#matchAttackResult").html(listHtml);
+        });
+
+        connection.on("ReceiveAttackResult", function (attackResult) {
+            var currentHtml = $("#matchAttackResult").html();
+            var resultHtml = `<p>${attackResult}</p>`;
+            $("#matchAttackResult").html(currentHtml + resultHtml);
+        });
+        // connection.on("ReceiveAttackList", function (matchResult) {
+        //     var listHtml = "";
+        //     listHtml += `<p>${matchResult.teamName} ${matchResult.attackName}</p>`;
+        //     $("#matchAttack").html(listHtml);
+        // });
+        // connection.on("ReceiveAttackResult", function (attackResult) {
+        //     $("#matchAttackResult").text(attackResult);
+        // });
+    });
+</script>
+
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div > <strong id="time"></strong></div>
+        <div > <strong id="timeSecound"></strong></div>
+        <div> <strong id="week"></strong></div>
+        <div class="alert alert-info"> Maç durumu : <strong id="count1"></strong></div>
+        <div class="alert alert-info"> Score : <strong id="matchList"></strong></div>
+        <div class="alert alert-info"> Ataklar : <strong id="matchAttackResult"></strong></div>
+    </div>
+</div>

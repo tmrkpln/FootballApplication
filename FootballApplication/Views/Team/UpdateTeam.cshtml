@@ -1,0 +1,38 @@
+﻿@using EntityLayer.Entites
+@model Teams
+@{
+    ViewData["Title"] = "UpdateTeam";
+}
+
+<div class="container">
+    <h1 class="mt-4">Update Team</h1>
+    <form asp-action="UpdateTeam" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="TeamsID"/>
+        <input type="hidden" asp-for="Logo"/>
+        <div class="form-group">
+            <label asp-for="TeamName" class="control-label">Team Name</label>
+            <input asp-for="TeamName" class="form-control" />
+            <span asp-validation-for="TeamName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="FoundingYear" class="control-label">Founding Year</label>
+            <input asp-for="FoundingYear" class="form-control" />
+            <span asp-validation-for="FoundingYear" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="TeamColours" class="control-label">Team Colours</label>
+            <input asp-for="TeamColours" class="form-control" />
+            <span asp-validation-for="TeamColours" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Logo" class="control-label">Logo</label>
+            <input type="file" name="LogoFile" class="form-control-file" />
+            <span asp-validation-for="Logo" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+

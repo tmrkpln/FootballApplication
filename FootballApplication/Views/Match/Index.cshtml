@@ -1,0 +1,118 @@
+﻿@using FootballApplication1.ModelView
+@model List<MatchDatesViewModel>
+@{
+    ViewData["Title"] = "Index";
+    int currentWeek = 0;
+    bool isFirstWeek = true;
+}
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table td, .table th {
+        padding: .75rem;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+</style>
+
+@if (Model == null || !Model.Any())
+{
+    <a href="/Match/CreateFixture" class="btn btn-outline-dark">Fikstür Listesi Oluştur</a>
+}
+else
+{
+
+    foreach (var item in ViewBag.v1)
+    {
+        if (currentWeek != item)
+        {
+            currentWeek = item;
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h2>
+                        @currentWeek .Hafta
+                        <button class="btn btn-primary" onclick="saveScoreButton(@currentWeek)">
+                            @currentWeek-Haftayı Oynat
+                        </button>
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Tarih</th>
+                                <th scope="col">Ev Sahibi</th>
+                                <th scope="col">Oran</th>
+                                <th scope="col">Ev Sahibi Skor</th>
+                                <th scope="col">Deplasman Skor</th>
+                                <th scope="col">Oran</th>
+                                <th scope="col">Deplasman</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var team in Model)
+                            {
+                                if (currentWeek == team.Weekİnfo)
+                                {
+                                    <tr>
+                                        <td>@team.MatchDate</td>
+                                        <td>@team.HomeOwnerName </td>
+                                        <td><strong>%@team.HomeOwnerWinRate</strong> </td>
+                                        <td>@team.HomeOwnerScore</td>
+                                        <td>@team.DisplacementScore</td>
+                                        <td><strong>%@team.DisplacementWinRate</td>
+                                        <td>@team.DisplacementName</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    }
+}
+
+<script>
+
+    function saveScoreButton(currentWeek) {
+        debugger;
+        $.ajax({
+            url: '/Match/CreateScore',
+            type: 'POST',
+            data: { week: currentWeek },
+            success: function (response) {
+                console.log('Başarılı:', response);
+                alert(currentWeek + ". Hafta başarıyla oynatıldı!");
+                window.location.reload();
+                // Başarılı olduğunda yapılacak işlemler
+            },
+            error: function (xhr, status, error) {
+                console.error('Hata:', error);
+                alert("Bir hata oluştu: " + error);
+                // Hata olduğunda yapılacak işlemler
+            }
+        });
+    }
+
+</script>
+

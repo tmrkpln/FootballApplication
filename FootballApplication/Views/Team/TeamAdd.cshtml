@@ -1,0 +1,48 @@
+﻿@model EntityLayer.Entites.Teams
+@{
+    ViewData["Title"] = "TeamAdd";
+}
+
+<h2>Takım Ekleme Ekranı</h2>
+
+<form asp-action="TeamAdd" method="post" class="form-horizontal" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="TeamName" class="control-label col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="TeamName" class="form-control" />
+            <span asp-validation-for="TeamName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FoundingYear" class="control-label col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="FoundingYear" class="form-control" type="date" />
+            <span asp-validation-for="FoundingYear" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TeamColours" class="control-label col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="TeamColours" class="form-control" />
+            <span asp-validation-for="TeamColours" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Logo" class="control-label col-md-2"></label>
+        <div class="col-md-10">
+            <input type="file" name="LogoFile" id="LogoFile" class="form-control" />
+            <span asp-validation-for="Logo" class="text-danger"></span>
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</form>
+
+

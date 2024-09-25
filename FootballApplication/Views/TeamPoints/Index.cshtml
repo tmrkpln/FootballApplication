@@ -1,0 +1,51 @@
+﻿@using FootballApplication1.ModelView
+@model List<_pointsServiceViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<title>League Statistics</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<body>
+    <div class="container">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Takım</th>
+                    <th>O</th>
+                    <th>G</th>
+                    <th>B</th>
+                    <th>M</th>
+                    <th>A</th>
+                    <th>Y</th>
+                    <th>A</th>
+                    <th>P</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int count = 1;
+                }
+                @foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td>@count</td>
+                        <td>@item.TeamName</td>
+                        <td>@item.Played</td>
+                        <td>@item.Wins</td>
+                        <td>@item.Draws</td>
+                        <td>@item.Losses</td>
+                        <td>@item.GoalsFor</td>
+                        <td>@item.GoalsAgainst</td>
+                        <td>@item.GoalDifference</td>
+                        <td>@item.Points</td>
+                    </tr>
+                    count++;
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+

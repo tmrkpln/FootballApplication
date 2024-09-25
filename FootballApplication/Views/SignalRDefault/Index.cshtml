@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(() => {
+        var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7188/SignalRHub").build();
+        $("#connstatus").text(connection.state);
+        connection.start().then(() => {
+            $("#connstatus").text(connection.state);
+            setInterval(() => {
+                connection.invoke("SendCount");
+            }, 1000);
+            
+        }).catch((err) => {
+            console.log(err);
+        });
+        connection.on("CountSend", (values) => {
+            $("#count").text(values);
+        })
+    });
+
+</script>
+
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="alert alert-success"> Bağlantının durumu : <strong id="connstatus"></strong></div>
+        <div class="alert alert-info"> Sayı durumu : <strong id="count"></strong></div>
+    </div>
+</div>
