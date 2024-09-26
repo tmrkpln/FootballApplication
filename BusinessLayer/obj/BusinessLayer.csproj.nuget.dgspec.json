@@ -31,6 +31,9 @@
             "projectReferences": {
               "C:\\Users\\tmrkp\\OneDrive\\Masaüstü\\FootballApplication\\DataAccessLayer\\DataAccessLayer.csproj": {
                 "projectPath": "C:\\Users\\tmrkp\\OneDrive\\Masaüstü\\FootballApplication\\DataAccessLayer\\DataAccessLayer.csproj"
+              },
+              "C:\\Users\\tmrkp\\OneDrive\\Masaüstü\\FootballApplication\\EntityLayer\\EntityLayer.csproj": {
+                "projectPath": "C:\\Users\\tmrkp\\OneDrive\\Masaüstü\\FootballApplication\\EntityLayer\\EntityLayer.csproj"
               }
             }
           }

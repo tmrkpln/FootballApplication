@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Abstract;
+﻿using AutoMapper;
+using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using EntityLayer.Entites;
@@ -12,34 +13,24 @@ namespace FootballApplication1.Controllers
 
         private readonly ITeamsService _teamsService;
         private readonly ITeamsPointsService _pointsService;
+        private readonly IMapper _mapper;
 
-        public TeamPointsController(ITeamsService teamsService, ITeamsPointsService pointsService)
+        public TeamPointsController(ITeamsService teamsService, ITeamsPointsService pointsService,IMapper mapper)
         {
             _teamsService = teamsService;
             _pointsService = pointsService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
             var values = _pointsService.TGetAll();
-            List<_pointsServiceViewModel> teamsPoints = new List<_pointsServiceViewModel>();
+            List<TeamPointsViewModel> teamsPoints = new List<TeamPointsViewModel>();
             foreach (var teamPoint in values)
             {
-                teamsPoints.Add(new _pointsServiceViewModel()
-                {
-                    _pointsServiceID = teamPoint.TeamPointsID,
-                    Draws = teamPoint.Draws,
-                    GoalDifference = teamPoint.GoalDifference,
-                    GoalsAgainst = teamPoint.GoalsAgainst,
-                    GoalsFor = teamPoint.GoalsFor,
-                    League = teamPoint.League,
-                    Losses = teamPoint.Losses,
-                    Played = teamPoint.Played,
-                    Points = teamPoint.Points,
-                    Wins = teamPoint.Wins,
-                    TeamId = teamPoint.TeamID,
-                    TeamName = _teamsService.TGetByID(teamPoint.TeamID).TeamName,
-                });
+                var mappedItem = _mapper.Map<TeamPointsViewModel>(teamPoint);
+                mappedItem.TeamName = _teamsService.TGetByID(teamPoint.TeamID).TeamName;
+                teamsPoints.Add(mappedItem);
             }
             teamsPoints = teamsPoints.OrderByDescending(tp => tp.Points).ToList();
             return View(teamsPoints);

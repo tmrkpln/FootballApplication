@@ -1,6 +1,6 @@
-﻿namespace FootballApplication1.ModelView
+﻿namespace BusinessLayer.Dto
 {
-    public class TeamPointsViewModel
+    public class TeamPointsDto
     {
         public int TeamPointsID { get; set; }
         public string? League { get; set; } //Lig
